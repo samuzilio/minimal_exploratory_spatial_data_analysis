@@ -28,7 +28,7 @@ $ renv::activate()
 ```
 $ renv::restore()
 ```
-**7**. Run the script (e.g. `esda.R`):
+**7**. Run the script:
 ```
 $ source("esda.R")
 ```
