@@ -5,6 +5,8 @@ This repository contains a script to perform a minimal exploratory spatial data 
 > [!IMPORTANT]
 > For demonstration purposes this script uses sample point data stored in a GPKG file.
 
+<br>
+
 ## Instructions
 Follow these steps to set up and run the script on your local machine:
 
@@ -18,7 +20,7 @@ $ git clone https://github.com/samuzilio/minimal_exploratory_spatial_data_analys
 
 **4**. Start a new R terminal;
 
-**5**. Create and activate a virtual environment:
+**5**. Create and activate a virtual environment (requires [`renv`](https://rstudio.github.io/renv/index.html) package installed globally):
 ```
 $ renv::activate()
 ```
