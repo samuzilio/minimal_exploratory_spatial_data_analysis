@@ -5,8 +5,6 @@ This repository contains a script to perform a minimal exploratory spatial data 
 > [!IMPORTANT]
 > For demonstration purposes this script uses sample point data stored in a GPKG file.
 
-<br>
-
 ## Instructions
 Follow these steps to set up and run the script on your local machine:
 
