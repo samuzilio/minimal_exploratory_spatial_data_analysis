@@ -1,15 +1,18 @@
+#%%
 library(sf)
 library(spdep)
 library(ggplot2)
 library(tmap)
 
-
+#%%
 data <- st_read("sample_point_data.gpkg")
 summary(data)
 
+#%%
 cleaned_data <- na.omit(data)
 summary(cleaned_data)
 
+#%%
 tmap_mode("view")
 tm_shape(cleaned_data) +
   tm_dots(
@@ -18,11 +21,12 @@ tm_shape(cleaned_data) +
     size = 0.1
   )
 
-
+#%%
 ##### Univariate Analyis #####
 # Analyze the distribution of a single variable
 summary(cleaned_data$height)
 
+#%%
 ggplot(cleaned_data, aes(x = height)) +
   geom_histogram(
     binwidth = 1,
@@ -37,6 +41,7 @@ ggplot(cleaned_data, aes(x = height)) +
   ) +
   theme_minimal()
 
+#%%
 ggplot(cleaned_data, aes(x = as.factor(nuts_1), y = height)) +
   geom_boxplot(
     fill = "#fa9fb5",
@@ -49,11 +54,12 @@ ggplot(cleaned_data, aes(x = as.factor(nuts_1), y = height)) +
   ) +
   theme_minimal()
 
-
+#%%
 ##### Bivariate Analyis #####
 # Analyze the correlation between two variables
 correlation_coefficient <- cor(cleaned_data$height, cleaned_data$perimeter)
 
+#%%
 ggplot(cleaned_data, aes(x = perimeter, y = height)) +
   geom_point(
     alpha = 0.5,
@@ -77,22 +83,23 @@ ggplot(cleaned_data, aes(x = perimeter, y = height)) +
   ) +
   theme_minimal()
 
-
+#%%
 ##### Preprocessing for Global/Local Spatial Autocorrelation Analysis #####
 # Create the spatial weights matrix
 coords <- st_coordinates(cleaned_data)
 nb <- knn2nb(knearneigh(coords, k = 10))
 lw <- nb2listw(nb, style = "W")
 
-
+#%%
 ##### Global Spatial Autocorrelation Analyis #####
 # Calculate and visualize the (Univariate) Global Moran's I
 global_moran_height <- moran.test(cleaned_data$height, lw)
 print(global_moran_height)
 
+#%%
 moran.plot(cleaned_data$height, lw, main = "Global Moran's I")
 
-
+#%%
 ##### Local Spatial Autocorrelation Analyis #####
 # Calculate and visualize the (Univariate) Local Moran's I
 local_moran_height <- localmoran(cleaned_data$height, lw)
@@ -100,6 +107,7 @@ cleaned_data$local_moran_height <- local_moran_height[, 4]
 cleaned_data$p_value_height <- local_moran_height[, 5]
 summary(cleaned_data$local_moran_height)
 
+#%%
 tmap_mode("view")
 tm_shape(cleaned_data) +
   tm_dots(
@@ -113,6 +121,7 @@ tm_shape(cleaned_data) +
     legend.position = c("right", "top")
   )
 
+#%%
 cleaned_data$cluster_height <- "NS"
 cleaned_data$cluster_height[
   cleaned_data$local_moran_height > 0 &
@@ -145,6 +154,7 @@ cleaned_data$cluster_height <- factor(
   )
 )
 
+#%%
 tmap_mode("view")
 tm_shape(cleaned_data) +
   tm_dots(
