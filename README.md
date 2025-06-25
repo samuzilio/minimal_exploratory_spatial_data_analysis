@@ -30,3 +30,4 @@ $ renv::activate()
 ```
 $ renv::restore()
 ```
+**7**. Open the `esda.R` file and run code cells.
